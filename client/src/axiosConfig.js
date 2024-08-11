@@ -7,12 +7,22 @@ const instance = axios.create({
 // Add a request interceptor
 instance.interceptors.request.use(
   function (config) {
-    const token = localStorage.getItem("persist:auth");
-    console.log(token);
+    // gắn token vào header
     return config;
   },
   function (error) {
     console.log(error);
+    return Promise.reject(error);
+  }
+);
+
+// Add a response interceptor
+instance.interceptors.response.use(
+  function (response) {
+    // refresh_token
+    return response;
+  },
+  function (error) {
     return Promise.reject(error);
   }
 );
