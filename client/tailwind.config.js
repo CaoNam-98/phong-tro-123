@@ -4,19 +4,20 @@ module.exports = {
   theme: {
     extend: {
       width: {
-        '1100': "1100px",
+        1100: "1100px",
       },
       backgroundColor: {
-        primary: '#F5F5F5',
-        secondary1: '#1266dd',
-        secondary2: '#F73859'
+        primary: "#F5F5F5",
+        secondary1: "#1266dd",
+        secondary2: "#F73859",
       },
       maxWidth: {
         600: "600px",
+        1100: "1100px",
       },
       cursor: {
-        pointer: 'pointer'
-      }
+        pointer: "pointer",
+      },
     },
   },
   plugins: [],
