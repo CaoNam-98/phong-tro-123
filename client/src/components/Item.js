@@ -1,25 +1,23 @@
 import React, { useState } from "react";
 import icons from "../ultils/icons";
 
-const images = [
-  "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2022/08/03/623042611a64d83a817527_1659520128.jpg",
-  "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2022/08/03/4f462a177212b04ce90323_1659520123.jpg",
-  "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2022/08/03/5fe176b02eb5ecebb5a425_1659520123.jpg",
-  "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2022/08/03/8b266c703475f62baf6419_1659520125.jpg",
-];
+const indexs = [0, 1, 2, 3];
 
 const { GrStar, RiHeartFill, RiHeartLine, BsBookmarkStarFill } = icons;
 
-const Item = () => {
+const Item = ({ images, user, title, star, description, attributes, address }) => {
   const [isHoverHeart, setIsHoverHeart] = useState(false);
+
   return (
-    <div className="w-full flex border-t border-orange-600 p-4">
+    <div className="w-full flex border-t border-orange-600 py-4">
       <div className="w-2/5 flex flex-wrap gap-[2px] items-center relative cursor-pointer">
-        <img src={images[0]} alt="preview" className="w-[140px] h-[120px] object-cover" />
-        <img src={images[1]} alt="preview" className="w-[140px] h-[120px] object-cover" />
-        <img src={images[2]} alt="preview" className="w-[140px] h-[120px] object-cover" />
-        <img src={images[3]} alt="preview" className="w-[140px] h-[120px] object-cover" />
-        <span className="bg-overlay-70 text-white px-2 rouded-md absolute left-1 bottom-1">4 ảnh</span>
+        {images?.length > 0 &&
+          images
+            .filter((i, index) => indexs.some((i) => i === index))
+            ?.map((i, index) => {
+              return <img key={index} src={i} alt="preview" className="w-[140px] h-[120px] object-cover" />;
+            })}
+        <span className="bg-overlay-70 text-white px-2 rouded-md absolute left-1 bottom-4 rounded-md">{`${images?.length} ảnh`}</span>
         <span
           className=" text-white absolute right-6 bottom-1"
           onMouseEnter={() => setIsHoverHeart(true)}
@@ -36,33 +34,30 @@ const Item = () => {
             <GrStar className="star-item" size={18} color="yellow" />
             <GrStar className="star-item" size={18} color="yellow" />
             <GrStar className="star-item" size={18} color="yellow" />
-            CHO THUÊ CĂN HỘ HOẶC VĂN PHÒNG LÀM VIỆC
+            {title}
           </div>
           <div className="w-[10%] flex justify-end">
             <BsBookmarkStarFill size={24} color="orange" />
           </div>
         </div>
         <div className="my-2 flex items-center justify-between">
-          <span className="font-bold text-green-600">3.7 triệu/tháng</span>
-          <span>90m²</span>
-          <span>Quận Tân Bình, Hồ Chí Minh</span>
+          <span className="font-bold text-green-600">{attributes?.price}</span>
+          <span>{attributes?.screage}</span>
+          <span>{address}</span>
         </div>
-        <p className="text-gray-500">
-          Ký Túc Xá Tiện Nghi tại trung tâm QUẬN BÌNH THẠNH. Giá chỉ từ: 1.655.000 VND/tháng/giường (tầng 1) Vị trí:
-          tiện lợi đi lại. Gần các quận trung tâm và…
-        </p>
+        <p className="text-gray-500 w-full h-[50px] text-ellipsis overflow-hidden">{description}</p>
         <div className="flex my-5 items-center justify-between">
-          <div className="flex items-center">
+          <div className="flex items-center gap-1">
             <img
-              src="https://tse3.mm.bing.net/th?id=OIP.ai5uSvv0f0venLUFGdVBQQHaHw&pid=Api&P=0&h=180"
+              src="http://getdrawings.com/free-icon-bw/anonymous-avatar-icon-19.png"
               alt="avatar"
               className="w-[30px] h-[30px] object-cover"
             />
-            <p>Tuệ Thu</p>
+            <p>{user?.name}</p>
           </div>
           <div className="flex items-center gap-1">
             <button type="button" className="bg-blue-700 text-white p-1 rounded-md">
-              Gọi 4565265332
+              {`Gọi ${user?.phone}`}
             </button>
             <button type="button" className="text-blue-700 p-1 rounded-md border border-blue-700">
               Nhắn zalo

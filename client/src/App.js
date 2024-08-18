@@ -4,7 +4,7 @@ import { path } from "./ultils/constant";
 
 function App() {
   return (
-    <div className="h-screen w-screen w-1100 bg-primary">
+    <div className="bg-primary">
       <Routes>
         <Route path={path.HOME} element={<Home />}>
           {/* Dấu * nghĩa là nó sẽ chạy xuống các route LOGIN, CHO_THUE_NHA, ... nếu mapping thì sẽ render component tương ứng, nếu không match thì render ra với path='*' này */}
