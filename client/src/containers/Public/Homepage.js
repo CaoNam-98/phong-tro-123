@@ -1,6 +1,7 @@
 import React from "react";
 import { text } from "../../ultils/constant";
 import { Province } from "../../components";
+import { List } from "./index";
 
 const Homepage = () => {
   return (
@@ -10,6 +11,13 @@ const Homepage = () => {
         <p className="text-base text-gray-700">{text.HOME_DESCRIPTION}</p>
       </div>
       <Province />
+      <div className="w-[100%] flex gap-4">
+        <div className="w-[70%] border-green-500 border">
+          <List />
+        </div>
+
+        <div className="w-[30%] border-green-500 border">Sidebar</div>
+      </div>
     </div>
   );
 };
