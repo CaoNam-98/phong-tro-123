@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import { Button, Item } from "../../components";
-import { getPosts } from "../../store/actions/post";
+import { getPosts, getPostsLimit } from "../../store/actions/post";
 import { useDispatch, useSelector } from "react-redux";
 
 const List = () => {
   const dispatch = useDispatch();
-  const { posts } = useSelector((state) => state.post);
+  const { posts, count } = useSelector((state) => state.post);
 
   useEffect(() => {
-    dispatch(getPosts());
+    dispatch(getPostsLimit(0));
   }, []);
 
   return (
@@ -38,7 +38,6 @@ const List = () => {
               />
             );
           })}
-        <Item />
       </div>
     </div>
   );

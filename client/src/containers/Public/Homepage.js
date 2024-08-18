@@ -1,9 +1,14 @@
 import React from "react";
 import { text } from "../../ultils/constant";
 import { Province } from "../../components";
-import { List } from "./index";
+import { List, Pagination } from "./index";
+// useParams để lấy /2, useSearchParams lấy /?page=2
+import { useParams, useSearchParams } from "react-router-dom";
 
 const Homepage = () => {
+  const [params] = useSearchParams();
+  console.log(params.get("page"));
+
   return (
     <div className="border border-red-500 w-full mt-3 flex flex-col gap-3">
       <div>
@@ -14,6 +19,7 @@ const Homepage = () => {
       <div className="w-[100%] flex gap-4">
         <div className="w-[70%] border-green-500 border">
           <List />
+          <Pagination />
         </div>
 
         <div className="w-[30%] border-green-500 border">Sidebar</div>

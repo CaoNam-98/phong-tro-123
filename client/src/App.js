@@ -9,6 +9,7 @@ function App() {
         <Route path={path.HOME} element={<Home />}>
           {/* Dấu * nghĩa là nó sẽ chạy xuống các route LOGIN, CHO_THUE_NHA, ... nếu mapping thì sẽ render component tương ứng, nếu không match thì render ra với path='*' này */}
           <Route path="*" element={<Homepage />} />
+          <Route path={path.HOME__PAGE} element={<Homepage />} />
           <Route path={path.LOGIN} element={<Login />} />
           <Route path={path.CHO_THUE_CAN_HO} element={<RentalApartment />} />
           <Route path={path.CHO_THUE_MAT_BANG} element={<RentalSpace />} />
