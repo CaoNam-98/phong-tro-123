@@ -19,7 +19,8 @@ const Homepage = () => {
       <div className="w-[100%] flex gap-4">
         <div className="w-[70%] border-green-500 border">
           <List />
-          <Pagination />
+          <Pagination number={params.get("page")} />
+          <div className="h-[500px]"></div>
         </div>
 
         <div className="w-[30%] border-green-500 border">Sidebar</div>
