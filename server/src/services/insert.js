@@ -6,6 +6,8 @@ import { v4 } from "uuid";
 // import nhachothue from "../../data/nhachothue.json";
 import chothuephongtro from "../../data/chothuephongtro.json";
 import generateCode from "../ultis/generateCode";
+import { dataPrice, dataArea } from "../ultis/data";
+import { getNumberFromString } from "../ultis/common";
 require("dotenv").config();
 
 // const dataBody = chothuecanho.body;
@@ -25,6 +27,9 @@ export const insertService = () =>
         let userId = v4();
         let imagesId = v4();
         let overviewId = v4();
+        let desc = JSON.stringify(item?.mainContent?.content);
+        let currentArea = getNumberFromString(item?.header?.attributes?.acreage);
+        let currrentPrice = getNumberFromString(item?.header?.attributes?.price);
         await db.Post.create({
           id: postId,
           title: item?.header?.title,
@@ -33,10 +38,12 @@ export const insertService = () =>
           address: item?.header?.address,
           attributesId,
           categoryCode: "CTPT",
-          description: JSON.stringify(item?.mainContent?.content),
+          description: desc,
           userId,
           overviewId,
           imagesId,
+          areaCode: dataArea.find((area) => area.max > currentArea && area.min <= currentArea)?.code,
+          priceCode: dataPrice.find((price) => price.max > currrentPrice && price.min <= currrentPrice)?.code,
         });
         await db.Attribute.create({
           id: attributesId,
