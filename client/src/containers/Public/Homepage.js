@@ -1,16 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { text } from "../../ultils/constant";
 import { Province, ItemSidebar } from "../../components";
 import { List, Pagination } from "./index";
 // useParams để lấy /2, useSearchParams lấy /?page=2
 import { useParams, useSearchParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import * as actions from "../../store/actions";
 
 const Homepage = () => {
   const [params] = useSearchParams();
-  const { categories } = useSelector((state) => state.app);
-  console.log(params.get("page"));
+  const { categories, prices, areas } = useSelector((state) => state.app);
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(actions.getPrices());
+    dispatch(actions.getAreas());
+  }, []);
+  console.log(prices);
   return (
     <div className="border border-red-500 w-full mt-3 flex flex-col gap-3">
       <div>
@@ -27,8 +33,8 @@ const Homepage = () => {
 
         <div className="w-[30%] border-green-500 flex flex-col gap-4 justify-start items-center">
           <ItemSidebar content={categories} title="Danh sách cho thuê" />
-          <ItemSidebar title="Xem theo giá" />
-          <ItemSidebar title="Xem theo diện tích" />
+          <ItemSidebar isDouble={true} content={prices} title="Xem theo giá" />
+          <ItemSidebar isDouble={true} content={areas} title="Xem theo diện tích" />
         </div>
       </div>
     </div>

@@ -3,8 +3,8 @@ import bcrypt from "bcryptjs";
 import { v4 } from "uuid";
 // import chothuecanho from "../../data/chothuecanho.json";
 // import chothuematbang from "../../data/chothuematbang.json";
-// import nhachothue from "../../data/nhachothue.json";
-import chothuephongtro from "../../data/chothuephongtro.json";
+import nhachothue from "../../data/nhachothue.json";
+// import chothuephongtro from "../../data/chothuephongtro.json";
 import generateCode from "../ultis/generateCode";
 import { dataPrice, dataArea } from "../ultis/data";
 import { getNumberFromString } from "../ultis/common";
@@ -12,8 +12,8 @@ require("dotenv").config();
 
 // const dataBody = chothuecanho.body;
 // const dataBody = chothuematbang.body;
-// const dataBody = nhachothue.body;
-const dataBody = chothuephongtro.body;
+const dataBody = nhachothue.body;
+// const dataBody = chothuephongtro.body;
 
 const hashPassword = (password) => bcrypt.hashSync(password, bcrypt.genSaltSync(12));
 
@@ -87,18 +87,26 @@ export const insertService = () =>
     }
   });
 
-// export const createUser = () =>
-//   new Promise(async (resolve, reject) => {
-//     try {
-//       await db.User.create({
-//         id: userId,
-//         name: item?.contact?.content.find((i) => i.name === "Liên hệ:")?.content,
-//         password: hashPassword("123456"),
-//         phone: item?.contact?.content.find((i) => i.name === "Điện thoại:")?.content,
-//         zalo: item?.contact?.content.find((i) => i.name === "Zalo:")?.content,
-//       });
-//       resolve("OK");
-//     } catch (err) {
-//       reject(err);
-//     }
-//   });
+export const createPricesAndAreas = () =>
+  new Promise((resolve, reject) => {
+    try {
+      dataPrice.forEach(async (item, index) => {
+        await db.Price.create({
+          code: item.code,
+          value: item.value,
+          order: index + 1,
+        });
+      });
+
+      dataArea.forEach(async (item, index) => {
+        await db.Area.create({
+          code: item.code,
+          value: item.value,
+          order: index + 1,
+        });
+      });
+      resolve("OK");
+    } catch (err) {
+      reject(err);
+    }
+  });
