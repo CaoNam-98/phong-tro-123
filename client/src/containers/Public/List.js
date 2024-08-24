@@ -9,7 +9,7 @@ const List = ({ page }) => {
 
   useEffect(() => {
     let offset = page ? +page - 1 : 0;
-    dispatch(getPostsLimit(offset));
+    dispatch(getPostsLimit({ offset }));
   }, [page]);
 
   return (
