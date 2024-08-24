@@ -16,6 +16,7 @@ const Homepage = () => {
     dispatch(actions.getPrices());
     dispatch(actions.getAreas());
   }, []);
+
   console.log(prices);
   return (
     <div className="border border-red-500 w-full mt-3 flex flex-col gap-3">
@@ -26,7 +27,7 @@ const Homepage = () => {
       <Province />
       <div className="w-[100%] flex gap-4">
         <div className="w-[70%] border-green-500 border">
-          <List page={params.get("page")} />
+          <List />
           <Pagination page={params.get("page")} />
           <div className="h-[500px]"></div>
         </div>

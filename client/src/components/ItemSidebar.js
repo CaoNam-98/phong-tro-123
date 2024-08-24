@@ -31,11 +31,10 @@ const ItemSidebar = ({ title, content, isDouble, type }) => {
   console.log(formatContent());
 
   const handleFilterPosts = (code) => {
-    dispatch(actions.getPostsLimit({ [type]: code }));
     navigate({
       pathname: location.pathname, // pathname là chữ trước dấu ?
       search: createSearchParams({
-        type: code,
+        priceCode: code,
       }).toString(),
     });
   };
