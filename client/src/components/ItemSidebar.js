@@ -34,7 +34,7 @@ const ItemSidebar = ({ title, content, isDouble, type }) => {
     navigate({
       pathname: location.pathname, // pathname là chữ trước dấu ?
       search: createSearchParams({
-        priceCode: code,
+        [type]: code,
       }).toString(),
     });
   };

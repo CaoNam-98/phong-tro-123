@@ -3,12 +3,10 @@ import { text } from "../../ultils/constant";
 import { Province, ItemSidebar } from "../../components";
 import { List, Pagination } from "./index";
 // useParams để lấy /2, useSearchParams lấy /?page=2
-import { useParams, useSearchParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../store/actions";
 
 const Homepage = () => {
-  const [params] = useSearchParams();
   const { categories, prices, areas } = useSelector((state) => state.app);
   const dispatch = useDispatch();
 
@@ -28,7 +26,7 @@ const Homepage = () => {
       <div className="w-[100%] flex gap-4">
         <div className="w-[70%] border-green-500 border">
           <List />
-          <Pagination page={params.get("page")} />
+          <Pagination />
           <div className="h-[500px]"></div>
         </div>
 

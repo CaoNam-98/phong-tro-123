@@ -3,8 +3,8 @@ import bcrypt from "bcryptjs";
 import { v4 } from "uuid";
 // import chothuecanho from "../../data/chothuecanho.json";
 // import chothuematbang from "../../data/chothuematbang.json";
-import nhachothue from "../../data/nhachothue.json";
-// import chothuephongtro from "../../data/chothuephongtro.json";
+// import nhachothue from "../../data/nhachothue.json";
+import chothuephongtro from "../../data/chothuephongtro.json";
 import generateCode from "../ultis/generateCode";
 import { dataPrice, dataArea } from "../ultis/data";
 import { getNumberFromString } from "../ultis/common";
@@ -12,8 +12,8 @@ require("dotenv").config();
 
 // const dataBody = chothuecanho.body;
 // const dataBody = chothuematbang.body;
-const dataBody = nhachothue.body;
-// const dataBody = chothuephongtro.body;
+// const dataBody = nhachothue.body;
+const dataBody = chothuephongtro.body;
 
 const hashPassword = (password) => bcrypt.hashSync(password, bcrypt.genSaltSync(12));
 
