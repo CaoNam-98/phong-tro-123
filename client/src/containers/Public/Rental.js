@@ -51,6 +51,7 @@ const Rental = () => {
             <RelatedPost />
           </div>
         </div>
+        
       </div>
   );
 };
