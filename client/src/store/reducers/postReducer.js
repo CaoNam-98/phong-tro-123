@@ -4,6 +4,7 @@ const initState = {
   posts: [],
   msg: "",
   count: 0,
+  newPosts: [],
 };
 
 const postReducer = (state = initState, action) => {
@@ -16,6 +17,14 @@ const postReducer = (state = initState, action) => {
         posts: action.posts || [],
         msg: action.msg || "",
         count: action.count || 0,
+      };
+
+    case actionTypes.GET_NEW_POST:
+      console.log('hahha1: ', action.newPosts);
+      return {
+        ...state,
+        newPosts: action.newPosts || [],
+        msg: action.msg || "",
       };
 
     default:

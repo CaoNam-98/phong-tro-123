@@ -1,5 +1,5 @@
 import actionTypes from "./actionType";
-import { apiGetPosts, apiGetPostsLimit } from "../../services/post";
+import { apiGetPosts, apiGetPostsLimit, apiGetNewPosts } from "../../services/post";
 
 // Middleware thể hiện ở đây là => function
 export const getPosts = () => async (dispatch) => {
@@ -25,10 +25,8 @@ export const getPosts = () => async (dispatch) => {
 };
 
 export const getPostsLimit = (query) => async (dispatch) => {
-  console.log(query);
   try {
     const response = await apiGetPostsLimit(query);
-    console.log("response: ", response);
     if (response?.data.err === 0) {
       dispatch({
         type: actionTypes.GET_POSTS_LIMIT,
@@ -45,6 +43,30 @@ export const getPostsLimit = (query) => async (dispatch) => {
     dispatch({
       type: actionTypes.GET_POSTS_LIMIT,
       posts: null,
+    });
+  }
+};
+
+export const getNewPosts = () => async (dispatch) => {
+  try {
+    const response = await apiGetNewPosts();
+    console.log('response: ', response);
+    if (response?.data.err === 0) {
+      dispatch({
+        type: actionTypes.GET_NEW_POST,
+        newPosts: response.data.response,
+      });
+    } else {
+      dispatch({
+        type: actionTypes.GET_NEW_POST,
+        msg: response.data.msg,
+        newPosts: null
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: actionTypes.GET_NEW_POST,
+      newPosts: null,
     });
   }
 };

@@ -21,7 +21,20 @@ export const getPostsLimit = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       err: -1,
-      msg: "Failed at post controller: ",
+      msg: "Failed at post controller: " + error,
+    });
+  }
+};
+
+export const getNewPosts = async (req, res) => {
+  console.log('Nam cao run');
+  try {
+    const response = await postService.getNewPostsService();
+    return res.status(200).json(response);
+  } catch (error) {
+    return res.status(500).json({
+      err: -1,
+      msg: "Failed at post controller: " + error,
     });
   }
 };
