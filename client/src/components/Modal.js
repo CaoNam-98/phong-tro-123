@@ -9,13 +9,28 @@ const Modal = ({ setIsShowModal, content, name }) => {
 
     useEffect(() => {
         const activeTrackEl = document.getElementById('track-active');
-        activeTrackEl.style.left=`${percent1}%`;
-    }, [percent1])
+        if (percent2 <= percent1) {
+            activeTrackEl.style.left=`${percent2}%`;
+            activeTrackEl.style.right=`${100 - percent1}%`;
+        } else {
+            activeTrackEl.style.left=`${percent1}%`;
+            activeTrackEl.style.right=`${100 - percent2}%`;
+        }
+        
+    }, [percent1, percent2])
 
-    useEffect(() => {
-        const activeTrackEl = document.getElementById('track-active');
-        activeTrackEl.style.right=`${100 - percent2}%`;
-    }, [percent2])
+    const onHandleClickTrack = (e) => {
+        e.stopPropagation();
+        const stackEl = document.getElementById('stack');
+        // Get toạ độ của thanh stack
+        const stackRect = stackEl.getBoundingClientRect();
+        let percent = Math.round((e.clientX - stackRect.left) * 100/stackRect.width);
+        if (Math.abs(percent - percent1) <= Math.abs(percent - percent2)) {
+            setPercent1(percent);
+        } else {
+            setPercent2(percent);
+        }
+    }
 
   return (
     <div
@@ -51,10 +66,10 @@ const Modal = ({ setIsShowModal, content, name }) => {
 
         {(name === 'price' || name === 'area') && <div className='p-12'>
             <div className="flex flex-col items-center justify-center relative">
-                <div className="slider-track h-[5px] absolute w-full top-0 bottom-0 bg-gray-300 rounded-full"></div>
-                <div id="track-active" className="slider-track-active h-[5px] absolute top-0 bottom-0 bg-orange-600 rounded-full"></div>
-               <input type="range" max='100' min='0' step='5' value={percent1} className="w-full appearance-none pointer-events-none absolute top-0 bottom-0" onChange={(e) => setPercent1(e.target.value)}/>
-               <input type="range" max='100' min='0' step='5' value={percent2} className="w-full appearance-none pointer-events-none absolute top-0 bottom-0" onChange={(e) => setPercent2(e.target.value)}/>
+                <div onClick={onHandleClickTrack} id="stack" className="slider-track h-[5px] absolute w-full top-0 bottom-0 bg-gray-300 rounded-full"></div>
+                <div onClick={onHandleClickTrack} id="track-active" className="slider-track-active h-[5px] absolute top-0 bottom-0 bg-orange-600 rounded-full"></div>
+               <input type="range" max='100' min='0' step='5' value={percent1} className="w-full appearance-none pointer-events-none absolute top-0 bottom-0" onChange={(e) => setPercent1(+e.target.value)}/>
+               <input type="range" max='100' min='0' step='5' value={percent2} className="w-full appearance-none pointer-events-none absolute top-0 bottom-0" onChange={(e) => setPercent2(+e.target.value)}/>
              
             </div>
         </div>}
