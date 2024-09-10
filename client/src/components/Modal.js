@@ -32,6 +32,13 @@ const Modal = ({ setIsShowModal, content, name }) => {
         }
     }
 
+    const convert100to15 = (percent) => {
+      // 10% => 1.5
+      // 9% => 1.35 * 10 = 14/5 = 2 dư 4 => 3*5 = 15/10 = 1.5;
+      // 11% => 1.65 * 10 = 17/5 = 3 dư 2 => 4*5 = 20/10 = 2;
+      return (Math.ceil(Math.round((percent * 1.5)) / 5) * 5) / 10;
+    }
+
   return (
     <div
       onClick={(e) => {
@@ -64,13 +71,17 @@ const Modal = ({ setIsShowModal, content, name }) => {
             )
         })}</div>}
 
-        {(name === 'price' || name === 'area') && <div className='p-12'>
+        {(name === 'price' || name === 'area') && <div className='p-12 py-20'>
             <div className="flex flex-col items-center justify-center relative">
+              <div className="z-30 absolute top-[-48px] font-bold text-xl text-orange-600">{`Từ ${percent1 <= percent2 ? convert100to15(percent1) : convert100to15(percent2)} - ${percent2 >= percent1 ? convert100to15(percent2) : convert100to15(percent1)} triệu`}</div>
                 <div onClick={onHandleClickTrack} id="stack" className="slider-track h-[5px] absolute w-full top-0 bottom-0 bg-gray-300 rounded-full"></div>
                 <div onClick={onHandleClickTrack} id="track-active" className="slider-track-active h-[5px] absolute top-0 bottom-0 bg-orange-600 rounded-full"></div>
-               <input type="range" max='100' min='0' step='5' value={percent1} className="w-full appearance-none pointer-events-none absolute top-0 bottom-0" onChange={(e) => setPercent1(+e.target.value)}/>
-               <input type="range" max='100' min='0' step='5' value={percent2} className="w-full appearance-none pointer-events-none absolute top-0 bottom-0" onChange={(e) => setPercent2(+e.target.value)}/>
-             
+               <input type="range" max='100' min='0' step='1' value={percent1} className="w-full appearance-none pointer-events-none absolute top-0 bottom-0" onChange={(e) => setPercent1(+e.target.value)}/>
+               <input type="range" max='100' min='0' step='1' value={percent2} className="w-full appearance-none pointer-events-none absolute top-0 bottom-0" onChange={(e) => setPercent2(+e.target.value)}/>
+               <div className="absolute z-30 top-6 left-0 right-0 flex justify-between items-center">
+                <span>0</span>
+                <span className="mr-[-12px]">15 triệu +</span>
+              </div>
             </div>
         </div>}
       </div>
