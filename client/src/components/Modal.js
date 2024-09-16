@@ -10,14 +10,15 @@ const Modal = ({ setIsShowModal, content, name }) => {
 
     useEffect(() => {
         const activeTrackEl = document.getElementById('track-active');
+       if (activeTrackEl) {
         if (percent2 <= percent1) {
-            activeTrackEl.style.left=`${percent2}%`;
-            activeTrackEl.style.right=`${100 - percent1}%`;
-        } else {
-            activeTrackEl.style.left=`${percent1}%`;
-            activeTrackEl.style.right=`${100 - percent2}%`;
-        }
-        
+          activeTrackEl.style.left=`${percent2}%`;
+          activeTrackEl.style.right=`${100 - percent1}%`;
+      } else {
+          activeTrackEl.style.left=`${percent1}%`;
+          activeTrackEl.style.right=`${100 - percent2}%`;
+      }
+       }
     }, [percent1, percent2])
 
     const handleClickTrack = (e, value) => {
@@ -33,27 +34,41 @@ const Modal = ({ setIsShowModal, content, name }) => {
         }
     }
 
-    const convert100to15 = (percent) => {
+    const convert100toTarget = (percent) => {
       // 10% => 1.5
       // 9% => 1.35 * 10 = 14/5 = 2 dư 4 => 3*5 = 15/10 = 1.5;
       // 11% => 1.65 * 10 = 17/5 = 3 dư 2 => 4*5 = 20/10 = 2;
-      return (Math.ceil(Math.round((percent * 1.5)) / 5) * 5) / 10;
+      //  ? 1.5 : name === 'area' ? 9 : 1;
+      return name === 'price' 
+      ? (Math.ceil(Math.round((percent * 1.5)) / 5) * 5) / 10 
+      : name === 'area' 
+      ? (Math.ceil(Math.round((percent * 0.9)) / 5) * 5)
+      : 0;
     }
 
-    const convert15to100 = percent => Math.floor((percent/15)*100);
+    const convert15to100 = percent => {
+      let target = name === 'price' ? 15 : name === 'area' ? 90 : 1;
+      return Math.floor((percent/target)*100);
+    }
 
     const getNumbers = (string) => string.split(' ').map(item => +item).filter(item => !item === false)
+    const getNumbersArea = (string) => string.split(' ').map(item => +item.match(/\d+/)).filter(item => item !== 0)
 
-    const handlePrice = (code, value) => {
+    const handleActive = (code, value) => {
       setActiveEl(code);
-      let arrMaxMin = getNumbers(value);
+      let arrMaxMin = name === 'price' ? getNumbers(value) : getNumbersArea(value);
       if (arrMaxMin.length === 1) {
         if (arrMaxMin[0] === 1) {
           setPercent1(0);
           setPercent2(convert15to100(1));
         }
 
-        if (arrMaxMin[0] === 15) {
+        if (arrMaxMin[0] === 20) {
+          setPercent1(0);
+          setPercent2(convert15to100(20));
+        }
+
+        if (arrMaxMin[0] === 15 || arrMaxMin[0] === 90) {
           setPercent1(100);
           setPercent2(100);
         }
@@ -66,8 +81,8 @@ const Modal = ({ setIsShowModal, content, name }) => {
     }
 
     const handleSubmit = () => {
-      console.log('start: ', convert100to15(percent1));
-      console.log('end: ', convert100to15(percent2));
+      console.log('start: ', convert100toTarget(percent1));
+      console.log('end: ', convert100toTarget(percent2));
     }
 
   return (
@@ -104,7 +119,7 @@ const Modal = ({ setIsShowModal, content, name }) => {
 
         {(name === 'price' || name === 'area') && <div className='p-12 py-20'>
             <div className="flex flex-col items-center justify-center relative">
-              <div className="z-30 absolute top-[-48px] font-bold text-xl text-orange-600">{`Từ ${percent1 <= percent2 ? convert100to15(percent1) : convert100to15(percent2)} - ${percent2 >= percent1 ? convert100to15(percent2) : convert100to15(percent1)} triệu`}</div>
+              <div className="z-30 absolute top-[-48px] font-bold text-xl text-orange-600">{`Từ ${percent1 <= percent2 ? convert100toTarget(percent1) : convert100toTarget(percent2)} - ${percent2 >= percent1 ? convert100toTarget(percent2) : convert100toTarget(percent1)} ${name === 'price' ? 'triệu' : 'm2'}`}</div>
                 <div onClick={handleClickTrack} id="stack" className="slider-track h-[5px] absolute w-full top-0 bottom-0 bg-gray-300 rounded-full"></div>
                 <div onClick={handleClickTrack} id="track-active" className="slider-track-active h-[5px] absolute top-0 bottom-0 bg-orange-600 rounded-full"></div>
                <input type="range" max='100' min='0' step='1' value={percent1} className="w-full appearance-none pointer-events-none absolute top-0 bottom-0" onChange={
@@ -126,7 +141,7 @@ const Modal = ({ setIsShowModal, content, name }) => {
                 <span className="mr-[-12px] cursor-pointer" onClick={(e) => {
                   e.stopPropagation();
                   handleClickTrack(e, 100);
-                }}>15 triệu +</span>
+                }}>{name === 'price' ? '15 triệu +' : name === 'area' ? 'Trên 90 m2' : '' }</span>
               </div>
             </div>
 
@@ -134,7 +149,7 @@ const Modal = ({ setIsShowModal, content, name }) => {
               <h4 className="font-medium mb-4">Chọn nhanh:</h4>
               <div className="flex gap-2 items-center flex-wrap w-full">{content?.map(item => {
                 return (
-                  <button key={item.code} onClick={() => handlePrice(item.code, item.value)} className={`px-4 py-1 bg-gray-200 rounded-md cursor-pointer ${item.code === activeEl ? 'bg-blue-500 text-white' : ''}`}>
+                  <button key={item.code} onClick={() => handleActive(item.code, item.value)} className={`px-4 py-1 bg-gray-200 rounded-md cursor-pointer ${item.code === activeEl ? 'bg-blue-500 text-white' : ''}`}>
                     {item.value}
                   </button>
                 )
@@ -142,11 +157,11 @@ const Modal = ({ setIsShowModal, content, name }) => {
              
             </div>
         </div>}
-        <button 
+        { (name === 'price' || name === 'area') && <button 
           type="button" 
-          className="w-full bg-orange-400 py-2 font-medium rounded-bl-md rounded-br-md"
+          className="w-full bg-[#FFA500] py-2 font-medium rounded-bl-md rounded-br-md"
           onClick={handleSubmit}
-        >Áp dụng</button>
+        >ÁP DỤNG</button> }
       </div>
     </div>
   );
